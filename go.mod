@@ -5,6 +5,7 @@ go 1.25.12
 require (
 	github.com/cloudwego/eino v0.9.21
 	github.com/cloudwego/eino-ext/components/model/openai v0.1.13
+	github.com/valyala/fasttemplate v1.2.2
 )
 
 require (
@@ -32,6 +33,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/slongfield/pyfmt v0.0.0-20220222012616-ea85ff4c361f // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/yargevad/filepathx v1.0.0 // indirect
 	golang.org/x/arch v0.11.0 // indirect
