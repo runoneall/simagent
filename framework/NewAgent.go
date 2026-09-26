@@ -39,5 +39,17 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 			"CURRENT_TIME": currentTime,
 			"TIME_ZONE":    timeZone,
 		}),
+		Middlewares: []adk.AgentMiddleware{
+			{
+				BeforeChatModel: func(ctx context.Context, state *adk.ChatModelAgentState) error {
+					ms, ok := ctx.Value("MessageStore").(*MessageStore)
+					if ok {
+						ms.Set(state.Messages)
+					}
+
+					return nil
+				},
+			},
+		},
 	})
 }

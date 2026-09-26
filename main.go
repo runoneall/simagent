@@ -9,7 +9,8 @@ import (
 	"simagent/framework"
 	"simagent/stdout"
 	"simagent/threadmgr"
-	"time"
+
+	"github.com/cloudwego/eino/schema"
 )
 
 func main() {
@@ -18,12 +19,15 @@ func main() {
 }
 
 func mainAgent() {
-	runner, err := framework.NewRunner(threadmgr.Context)
+	ms := framework.NewMessageStore()
+	ctx := context.WithValue(threadmgr.Context, "MessageStore", ms)
+
+	runner, err := framework.NewRunner(ctx)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	iter := runner.Query(threadmgr.Context, framework.UserPrompt())
+	iter := runner.Query(ctx, framework.UserPrompt())
 	for {
 		event, ok := iter.Next()
 		if !ok {
@@ -32,7 +36,7 @@ func mainAgent() {
 
 		if event.Err != nil {
 			if errors.Is(event.Err, context.Canceled) {
-				time.Sleep(5 * time.Second)
+				stdout.Logger.Println("INFO 用户中断")
 				break
 			}
 
@@ -67,5 +71,43 @@ func mainAgent() {
 
 	if threadmgr.Context.Err() == nil {
 		threadmgr.Start(mainAgent)
+
+	} else {
+		iter := runner.Run(context.Background(), append(ms.Get(), schema.UserMessage("INTERRUPT")))
+		for {
+			event, ok := iter.Next()
+			if !ok {
+				break
+			}
+
+			if event.Err != nil {
+				stdout.Logger.Println("ERROR", event.Err)
+				break
+			}
+
+			if event.Output != nil && event.Output.MessageOutput != nil {
+				stream := event.Output.MessageOutput.MessageStream
+
+				if stream != nil {
+					for {
+						msg, err := stream.Recv()
+						if errors.Is(err, io.EOF) {
+							break
+						}
+
+						if err != nil {
+							stdout.Logger.Println("ERROR", err)
+							break
+						}
+
+						if msg != nil {
+							fmt.Fprint(stdout.Writer, msg.Content)
+						}
+					}
+				}
+			}
+		}
+
+		stdout.Logger.Println("INFO TinyAgent 已退出")
 	}
 }
