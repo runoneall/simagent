@@ -18,7 +18,7 @@ func main() {
 }
 
 func mainAgent() {
-	runner, err := framework.NewRunner()
+	runner, err := framework.NewRunner(threadmgr.Context)
 	if err != nil {
 		log.Fatalln(err)
 	}

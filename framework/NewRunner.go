@@ -1,18 +1,18 @@
 package framework
 
 import (
-	"simagent/threadmgr"
+	"context"
 
 	"github.com/cloudwego/eino/adk"
 )
 
-func NewRunner() (*adk.Runner, error) {
-	agent, err := NewAgent()
+func NewRunner(ctx context.Context) (*adk.Runner, error) {
+	agent, err := NewAgent(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return adk.NewRunner(threadmgr.Context, adk.RunnerConfig{
+	return adk.NewRunner(ctx, adk.RunnerConfig{
 		Agent:           agent,
 		EnableStreaming: true,
 	}), nil

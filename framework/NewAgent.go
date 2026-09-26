@@ -1,10 +1,10 @@
 package framework
 
 import (
+	"context"
 	_ "embed"
 	"fmt"
 	"math"
-	"simagent/threadmgr"
 	"time"
 
 	"github.com/cloudwego/eino/adk"
@@ -14,8 +14,8 @@ import (
 //go:embed system.md
 var systemPrompt string
 
-func NewAgent() (*adk.ChatModelAgent, error) {
-	chatModel, err := NewChatModel()
+func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
+	chatModel, err := NewChatModel(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func NewAgent() (*adk.ChatModelAgent, error) {
 		return ""
 	}(), offset/3600)
 
-	return adk.NewChatModelAgent(threadmgr.Context, &adk.ChatModelAgentConfig{
+	return adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Model:         chatModel,
 		MaxIterations: math.MaxInt,
 		Instruction: fasttemplate.New(systemPrompt, "{{", "}}").ExecuteString(map[string]any{
