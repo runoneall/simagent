@@ -40,6 +40,6 @@ func mainAgent() {
 			stdout.Logger.Println("ERROR", err)
 		}
 
-		stdout.Logger.Println("INFO TinyAgent 已退出")
+		stdout.Logger.Println("INFO SimAgent 已退出")
 	}
 }
