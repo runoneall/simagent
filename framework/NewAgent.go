@@ -32,6 +32,15 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 		return ""
 	}(), offset/3600)
 
+	saveState := func(ctx context.Context, state *adk.ChatModelAgentState) error {
+		ms, ok := ctx.Value(MessageStoreKey).(*MessageStore)
+		if ok {
+			ms.Set(state.Messages)
+		}
+
+		return nil
+	}
+
 	return adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Model:         chatModel,
 		MaxIterations: math.MaxInt,
@@ -41,14 +50,8 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 		}),
 		Middlewares: []adk.AgentMiddleware{
 			{
-				BeforeChatModel: func(ctx context.Context, state *adk.ChatModelAgentState) error {
-					ms, ok := ctx.Value("MessageStore").(*MessageStore)
-					if ok {
-						ms.Set(state.Messages)
-					}
-
-					return nil
-				},
+				BeforeChatModel: saveState,
+				AfterChatModel:  saveState,
 			},
 		},
 	})
