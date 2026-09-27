@@ -5,11 +5,11 @@ func (w *writer) Write(p []byte) (n int, err error) {
 
 	for _, b := range p {
 		if w.isFirstChar {
-			w.isFirstChar = false
-
-			if b == '\n' {
+			if b == '\r' || b == '\n' {
 				continue
 			}
+
+			w.isFirstChar = false
 		}
 
 		if b == '\r' || (b == '\n' && w.newLineFlag) {
