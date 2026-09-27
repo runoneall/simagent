@@ -3,6 +3,7 @@ module simagent
 go 1.25.12
 
 require (
+	github.com/barkimedes/go-deepcopy v0.0.0-20220514131651-17c30cfc62df
 	github.com/cloudwego/eino v0.9.21
 	github.com/cloudwego/eino-ext/components/model/openai v0.1.13
 	github.com/valyala/fasttemplate v1.2.2

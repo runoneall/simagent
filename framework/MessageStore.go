@@ -3,6 +3,7 @@ package framework
 import (
 	"sync"
 
+	"github.com/barkimedes/go-deepcopy"
 	"github.com/cloudwego/eino/schema"
 )
 
@@ -15,14 +16,14 @@ type MessageStore struct {
 
 func (ms *MessageStore) Set(messages []*schema.Message) {
 	ms.lock.Lock()
-	ms.messages = messages
-	ms.lock.Unlock()
+	defer ms.lock.Unlock()
+	ms.messages = deepcopy.MustAnything(messages).([]*schema.Message)
 }
 
 func (ms *MessageStore) Get() []*schema.Message {
 	ms.lock.RLock()
 	defer ms.lock.RUnlock()
-	return ms.messages
+	return deepcopy.MustAnything(ms.messages).([]*schema.Message)
 }
 
 func (ms *MessageStore) Last() *schema.Message {
@@ -34,13 +35,13 @@ func (ms *MessageStore) Last() *schema.Message {
 		return nil
 	}
 
-	return ms.messages[length-1]
+	return deepcopy.MustAnything(ms.messages[length-1]).(*schema.Message)
 }
 
 func (ms *MessageStore) Append(message *schema.Message) {
 	ms.lock.Lock()
-	ms.messages = append(ms.messages, message)
-	ms.lock.Unlock()
+	defer ms.lock.Unlock()
+	ms.messages = append(ms.messages, deepcopy.MustAnything(message).(*schema.Message))
 }
 
 func NewMessageStore() *MessageStore {
