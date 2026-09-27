@@ -17,7 +17,7 @@ func main() {
 
 func mainAgent() {
 	ms := framework.NewMessageStore()
-	ms.Set(append(ms.Get(), schema.UserMessage(framework.UserPrompt())))
+	ms.Append(schema.UserMessage(framework.UserPrompt()))
 	ctx := context.WithValue(threadmgr.Context, framework.MessageStoreKey, ms)
 
 	if err := framework.Complete(ctx, ms); err != nil {
@@ -35,7 +35,7 @@ func mainAgent() {
 		threadmgr.Start(mainAgent)
 
 	} else if ms.Last().Role != schema.User {
-		ms.Set(append(ms.Get(), schema.UserMessage("INTERRUPT")))
+		ms.Append(schema.UserMessage("INTERRUPT"))
 		if err := framework.Complete(context.Background(), ms); err != nil {
 			stdout.Logger.Println("ERROR", err)
 		}

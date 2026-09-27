@@ -37,6 +37,12 @@ func (ms *MessageStore) Last() *schema.Message {
 	return ms.messages[length-1]
 }
 
+func (ms *MessageStore) Append(message *schema.Message) {
+	ms.lock.Lock()
+	ms.messages = append(ms.messages, message)
+	ms.lock.Unlock()
+}
+
 func NewMessageStore() *MessageStore {
 	return &MessageStore{
 		messages: []*schema.Message{},
