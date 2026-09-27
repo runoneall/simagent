@@ -17,6 +17,7 @@ func main() {
 
 func mainAgent() {
 	ms := framework.NewMessageStore()
+	ms.Set(append(ms.Get(), schema.UserMessage(framework.UserPrompt())))
 	ctx := context.WithValue(threadmgr.Context, framework.MessageStoreKey, ms)
 
 	if err := framework.Complete(ctx, ms); err != nil {
