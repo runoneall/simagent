@@ -34,3 +34,4 @@ go.work.sum
 # simagent
 config.json
 agent.md
+kvstore.json
