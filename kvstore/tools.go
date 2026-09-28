@@ -2,6 +2,7 @@ package kvstore
 
 import (
 	"context"
+	"log"
 	"strings"
 
 	"github.com/cloudwego/eino/components/tool"
@@ -30,7 +31,7 @@ const (
 	kvListDesc   = "List all keys currently present in the key-value store. This is a read-only operation and may be executed concurrently with other read-only tools such as kv_get. Use it to discover available keys before reading, updating, or deleting them. Returns only the keys, not their values."
 )
 
-func Tools() ([]tool.BaseTool, error) {
+func Tools() []tool.BaseTool {
 	kvGetTool, err := utils.InferTool(
 		"kv_get", kvGetDesc,
 		func(_ context.Context, input *kvGetInput) (string, error) {
@@ -39,7 +40,7 @@ func Tools() ([]tool.BaseTool, error) {
 	)
 
 	if err != nil {
-		return nil, err
+		log.Fatalln(err)
 	}
 
 	kvSetTool, err := utils.InferTool(
@@ -55,7 +56,7 @@ func Tools() ([]tool.BaseTool, error) {
 	)
 
 	if err != nil {
-		return nil, err
+		log.Fatalln(err)
 	}
 
 	kvDeleteTool, err := utils.InferTool(
@@ -71,7 +72,7 @@ func Tools() ([]tool.BaseTool, error) {
 	)
 
 	if err != nil {
-		return nil, err
+		log.Fatalln(err)
 	}
 
 	kvListTool, err := utils.InferTool(
@@ -82,8 +83,8 @@ func Tools() ([]tool.BaseTool, error) {
 	)
 
 	if err != nil {
-		return nil, err
+		log.Fatalln(err)
 	}
 
-	return []tool.BaseTool{kvGetTool, kvSetTool, kvDeleteTool, kvListTool}, nil
+	return []tool.BaseTool{kvGetTool, kvSetTool, kvDeleteTool, kvListTool}
 }

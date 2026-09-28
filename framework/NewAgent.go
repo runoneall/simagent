@@ -45,11 +45,6 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 		return nil
 	}
 
-	kvTools, err := kvstore.Tools()
-	if err != nil {
-		return nil, err
-	}
-
 	return adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Model:         chatModel,
 		MaxIterations: math.MaxInt,
@@ -68,7 +63,7 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 
 		ToolsConfig: adk.ToolsConfig{
 			ToolsNodeConfig: compose.ToolsNodeConfig{
-				Tools: append(kvTools, mcptools.Tools()...),
+				Tools: append(kvstore.Tools(), mcptools.Tools()...),
 				ToolCallMiddlewares: []compose.ToolMiddleware{
 					{
 						Invokable: func(next compose.InvokableToolEndpoint) compose.InvokableToolEndpoint {
