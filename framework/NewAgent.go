@@ -75,7 +75,7 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 									stdout.Logger.Println("ERROR", err)
 
 									return &compose.ToolOutput{
-										Result: fmt.Sprintf("Tool %s execution failed with error: %v. Please correct your input or handle this fallback.", input.Name, err),
+										Result: fmt.Sprintf("[Tool Error] Tool '%s' failed: %v. Please correct your parameters and retry, or explain the failure and proceed with a fallback response.", input.Name, err),
 									}, nil
 								}
 

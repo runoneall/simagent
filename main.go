@@ -35,7 +35,7 @@ func mainAgent() {
 		threadmgr.Start(mainAgent)
 
 	} else if ms.Last().Role != schema.User {
-		ms.Append(schema.UserMessage("INTERRUPT"))
+		ms.Append(schema.UserMessage("[SYSTEM MESSAGE]: INTERRUPT"))
 		if err := framework.Complete(context.Background(), ms); err != nil {
 			stdout.Logger.Println("ERROR", err)
 		}
