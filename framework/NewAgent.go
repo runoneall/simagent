@@ -7,6 +7,7 @@ import (
 	"math"
 	"simagent/kvstore"
 	"simagent/mcptools"
+	"simagent/msgstore"
 	"simagent/stdout"
 	"time"
 
@@ -37,7 +38,7 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 	}(), offset/3600)
 
 	saveState := func(ctx context.Context, state *adk.ChatModelAgentState) error {
-		ms, ok := ctx.Value(MessageStoreKey).(*MessageStore)
+		ms, ok := ctx.Value(msgstore.MessageStoreKey).(*msgstore.MessageStore)
 		if ok {
 			ms.Set(state.Messages)
 		}

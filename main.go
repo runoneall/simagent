@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"simagent/framework"
+	"simagent/msgstore"
 	"simagent/stdout"
 	"simagent/threadmgr"
 
@@ -16,9 +17,9 @@ func main() {
 }
 
 func mainAgent() {
-	ms := framework.NewMessageStore()
+	ms := msgstore.New()
 	ms.Append(schema.UserMessage(framework.UserPrompt()))
-	ctx := context.WithValue(threadmgr.Context, framework.MessageStoreKey, ms)
+	ctx := context.WithValue(threadmgr.Context, msgstore.MessageStoreKey, ms)
 
 	if err := framework.Complete(ctx, ms); err != nil {
 		if errors.Is(err, context.Canceled) {

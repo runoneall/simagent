@@ -5,10 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"simagent/msgstore"
 	"simagent/stdout"
 )
 
-func Complete(ctx context.Context, ms *MessageStore) error {
+func Complete(ctx context.Context, ms *msgstore.MessageStore) error {
 	runner, err := NewRunner(ctx)
 	if err != nil {
 		return err
