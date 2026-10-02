@@ -9,20 +9,22 @@ import (
 	"github.com/cloudwego/eino/components/tool/utils"
 )
 
-type kvGetInput struct {
-	Key string `json:"key" jsonschema:"description=The exact key to retrieve from the store"`
-}
+type (
+	kvGetInput struct {
+		Key string `json:"key" jsonschema:"description=The exact key to retrieve from the store"`
+	}
 
-type kvSetInput struct {
-	Key   string `json:"key" jsonschema:"description=The exact key to create or overwrite"`
-	Value string `json:"value" jsonschema:"description=The value to store for the key"`
-}
+	kvSetInput struct {
+		Key   string `json:"key" jsonschema:"description=The exact key to create or overwrite"`
+		Value string `json:"value" jsonschema:"description=The value to store for the key"`
+	}
 
-type kvDeleteInput struct {
-	Key string `json:"key" jsonschema:"description=The exact key to delete from the store"`
-}
+	kvDeleteInput struct {
+		Key string `json:"key" jsonschema:"description=The exact key to delete from the store"`
+	}
 
-type kvListInput struct{}
+	kvListInput struct{}
+)
 
 const (
 	kvGetDesc    = "Read a value from the key-value store by key. This is a read-only operation and may be executed concurrently with other read-only tools such as kv_list. Use it when you already know the key and need its value. Returns the stored value as a string."
@@ -39,10 +41,6 @@ func Tools() []tool.BaseTool {
 		},
 	)
 
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	kvSetTool, err := utils.InferTool(
 		"kv_set", kvSetDesc,
 		func(_ context.Context, input *kvSetInput) (string, error) {
@@ -55,10 +53,6 @@ func Tools() []tool.BaseTool {
 		},
 	)
 
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	kvDeleteTool, err := utils.InferTool(
 		"kv_delete", kvDeleteDesc,
 		func(_ context.Context, input *kvDeleteInput) (string, error) {
@@ -70,10 +64,6 @@ func Tools() []tool.BaseTool {
 			return "success", nil
 		},
 	)
-
-	if err != nil {
-		log.Fatalln(err)
-	}
 
 	kvListTool, err := utils.InferTool(
 		"kv_list", kvListDesc,
