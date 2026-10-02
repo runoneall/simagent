@@ -9,7 +9,7 @@ import (
 	"github.com/mark3labs/mcp-go/client/transport"
 )
 
-func newClient(cfg config.MCPConfig) (*client.Client, error) {
+func mcpclient(cfg config.MCPConfig) (*client.Client, error) {
 	switch cfg.Type {
 
 	case config.MCPTypeHTTP:

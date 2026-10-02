@@ -18,22 +18,21 @@ func init() {
 	lock.Lock()
 	defer lock.Unlock()
 
-	cfg := config.Get()
-	for _, mcpCfg := range cfg.MCP {
-		cli, err := newClient(mcpCfg)
+	for _, cfg := range config.Get().MCP {
+		client, err := mcpclient(cfg)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
 		onexit.Do(func() {
-			cli.Close()
+			client.Close()
 		})
 
-		mcpTool, err := getMCPTool(cli)
+		mcpTools, err := getmcptools(client)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
-		tools = append(tools, mcpTool...)
+		tools = append(tools, mcpTools...)
 	}
 }
