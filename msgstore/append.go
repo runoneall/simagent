@@ -8,5 +8,6 @@ import (
 func (ms *MessageStore) Append(message *schema.Message) {
 	ms.lock.Lock()
 	defer ms.lock.Unlock()
+
 	ms.messages = append(ms.messages, deepcopy.MustAnything(message).(*schema.Message))
 }

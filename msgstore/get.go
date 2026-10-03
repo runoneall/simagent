@@ -8,5 +8,6 @@ import (
 func (ms *MessageStore) Get() []*schema.Message {
 	ms.lock.RLock()
 	defer ms.lock.RUnlock()
+
 	return deepcopy.MustAnything(ms.messages).([]*schema.Message)
 }
