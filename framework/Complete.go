@@ -41,7 +41,7 @@ func Complete(ctx context.Context, ms *msgstore.MessageStore) error {
 					}
 
 					if msg != nil {
-						fmt.Fprint(stdout.Writer, msg.Content)
+						fmt.Fprint(stdout.Writer(ctx), msg.Content)
 					}
 				}
 			}

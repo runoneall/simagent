@@ -46,6 +46,7 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 		return nil
 	}
 
+	logger := stdout.Logger(ctx)
 	return adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Model:         chatModel,
 		MaxIterations: math.MaxInt,
@@ -69,11 +70,11 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 					{
 						Invokable: func(next compose.InvokableToolEndpoint) compose.InvokableToolEndpoint {
 							return func(ctx context.Context, input *compose.ToolInput) (*compose.ToolOutput, error) {
-								stdout.Logger.Printf("INFO 工具调用 tool=%s arguments=%s\n", input.Name, input.Arguments)
+								logger.Printf("INFO 工具调用 tool=%s arguments=%s\n", input.Name, input.Arguments)
 
 								output, err := next(ctx, input)
 								if err != nil {
-									stdout.Logger.Println("ERROR", err)
+									logger.Println("ERROR", err)
 
 									return &compose.ToolOutput{
 										Result: fmt.Sprintf("[TOOL ERROR] tool '%s' failed: %v. please correct your parameters and retry, or explain the failure and proceed with a fallback response.", input.Name, err),

@@ -1,5 +1,10 @@
 package stdout
 
-import "log"
+import (
+	"context"
+	"log"
+)
 
-var Logger = log.New(Writer, "\n", log.LstdFlags)
+func Logger(ctx context.Context) *log.Logger {
+	return log.New(Writer(ctx), "\n", log.LstdFlags)
+}

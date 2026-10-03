@@ -20,17 +20,18 @@ func mainAgent() {
 	ms := msgstore.New()
 	ms.Append(schema.UserMessage(framework.UserPrompt()))
 	ctx := context.WithValue(threadmgr.Context, msgstore.MessageStoreKey, ms)
+	logger := stdout.Logger(ctx)
 
 	if err := framework.Complete(ctx, ms); err != nil {
 		if errors.Is(err, context.Canceled) {
-			stdout.Logger.Println("INFO 用户取消任务")
+			logger.Println("INFO 用户取消任务")
 
 		} else {
-			stdout.Logger.Println("ERROR", err)
+			logger.Println("ERROR", err)
 		}
 	}
 
-	stdout.Logger.Println("INFO Agent 已退出任务")
+	logger.Println("INFO Agent 已退出任务")
 
 	if threadmgr.Context.Err() == nil {
 		threadmgr.Start(mainAgent)
@@ -38,9 +39,9 @@ func mainAgent() {
 	} else if ms.Last().Role != schema.User {
 		ms.Append(schema.UserMessage("[SYSTEM MESSAGE]: INTERRUPT"))
 		if err := framework.Complete(context.Background(), ms); err != nil {
-			stdout.Logger.Println("ERROR", err)
+			logger.Println("ERROR", err)
 		}
 
-		stdout.Logger.Println("INFO SimAgent 已退出")
+		logger.Println("INFO SimAgent 已退出")
 	}
 }
