@@ -41,6 +41,10 @@ func Tools() []tool.BaseTool {
 		},
 	)
 
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	kvSetTool, err := utils.InferTool(
 		"kv_set", kvSetDesc,
 		func(_ context.Context, input *kvSetInput) (string, error) {
@@ -53,6 +57,10 @@ func Tools() []tool.BaseTool {
 		},
 	)
 
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	kvDeleteTool, err := utils.InferTool(
 		"kv_delete", kvDeleteDesc,
 		func(_ context.Context, input *kvDeleteInput) (string, error) {
@@ -64,6 +72,10 @@ func Tools() []tool.BaseTool {
 			return "success", nil
 		},
 	)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	kvListTool, err := utils.InferTool(
 		"kv_list", kvListDesc,
