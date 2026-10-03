@@ -4,7 +4,10 @@ import (
 	"context"
 	"errors"
 	"simagent/framework"
+	_ "simagent/kvstore"
+	_ "simagent/mcptools"
 	"simagent/msgstore"
+	_ "simagent/multitask"
 	"simagent/stdout"
 	"simagent/threadmgr"
 
