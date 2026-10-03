@@ -1,8 +1,8 @@
-package mcptools
+package alltools
 
 import "github.com/cloudwego/eino/components/tool"
 
-func Tools() []tool.BaseTool {
+func Get() []tool.BaseTool {
 	lock.RLock()
 	defer lock.RUnlock()
 

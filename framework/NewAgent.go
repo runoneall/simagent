@@ -5,8 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"math"
-	"simagent/kvstore"
-	"simagent/mcptools"
+	"simagent/alltools"
 	"simagent/msgstore"
 	"simagent/stdout"
 	"time"
@@ -65,7 +64,7 @@ func NewAgent(ctx context.Context) (*adk.ChatModelAgent, error) {
 
 		ToolsConfig: adk.ToolsConfig{
 			ToolsNodeConfig: compose.ToolsNodeConfig{
-				Tools: append(kvstore.Tools(), mcptools.Tools()...),
+				Tools: alltools.Get(),
 				ToolCallMiddlewares: []compose.ToolMiddleware{
 					{
 						Invokable: func(next compose.InvokableToolEndpoint) compose.InvokableToolEndpoint {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"simagent/alltools"
 	"sync"
 )
 
@@ -37,4 +38,6 @@ func init() {
 			log.Fatalln(err)
 		}
 	}
+
+	alltools.Add(tools()...)
 }

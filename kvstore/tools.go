@@ -33,7 +33,7 @@ const (
 	kvListDesc   = "list all keys in the KV store"
 )
 
-func Tools() []tool.BaseTool {
+func tools() []tool.BaseTool {
 	kvGetTool, err := utils.InferTool(
 		"kv_get", kvGetDesc,
 		func(_ context.Context, input *kvGetInput) (string, error) {

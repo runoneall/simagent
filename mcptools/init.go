@@ -2,22 +2,16 @@ package mcptools
 
 import (
 	"log"
+	"simagent/alltools"
 	"simagent/config"
 	"simagent/onexit"
-	"sync"
 
 	"github.com/cloudwego/eino/components/tool"
 )
 
-var (
-	tools []tool.BaseTool
-	lock  sync.RWMutex
-)
+var tools []tool.BaseTool
 
 func init() {
-	lock.Lock()
-	defer lock.Unlock()
-
 	for _, cfg := range config.Get().MCP {
 		client, err := mcpclient(cfg)
 		if err != nil {
@@ -35,4 +29,6 @@ func init() {
 
 		tools = append(tools, mcpTools...)
 	}
+
+	alltools.Add(tools...)
 }

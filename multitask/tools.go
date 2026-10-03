@@ -44,7 +44,7 @@ const (
 	multitaskListDesc   = "list all tasks"
 )
 
-func Tools() []tool.BaseTool {
+func tools() []tool.BaseTool {
 	multitaskRunTool, err := utils.InferTool(
 		"multitask_run", multitaskRunDesc,
 		func(_ context.Context, input *multitaskRunInput) (string, error) {
